@@ -62,6 +62,16 @@ func main() {
 	}
 
 	router := mux.NewRouter()
+
+	// Add health check endpoints for both "/" and "/health"
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { 
+	    w.WriteHeader(http.StatusOK) 
+	}).Methods("GET")
+	
+	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) { 
+	    w.WriteHeader(http.StatusOK) 
+	}).Methods("GET")
+	
 	RegisterHandlers(
 		router,
 		ServeReportHandler{grafana.NewV4Client, report.New},
